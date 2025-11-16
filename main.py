@@ -5,6 +5,9 @@ from jinja2 import Template
 # =======================
 first_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_compressed.png"
 end_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_alt_compressed.png"
+discord_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/discord.png"
+instagram_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/instagram.png"
+youtube_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/youtube.png"
 
 # Liste des PS SAUF le n°4
 # (on n’indique plus d’ID ici)
@@ -67,6 +70,8 @@ Il est enfin l’heure des listes...
 <!-- ON VA ENFIN CHANGER CES VIEUX BIKERZZ (NAN JE RIGOLE ON VOUS AIME, SURTOUT JULES NOTRE PETIT FILLOT) -->
 <strong>ET</strong> on a hâte de vous présenter <strong>Bandizz</strong>,
 la liste préférée de ta liste préférée !
+
+
 """
 
 signature = "C'était vos ReZZpo Comm de la liste Bandizz 🔫"
@@ -89,24 +94,22 @@ html_template = """
                   background-color: {{ header_bg_color }};
                   background-position: center; /* centre le motif */
                   padding: 20px; 
+                  color: #fff;
                   text-align: center;">
                 <img alt="BDE Logo" style="width: auto; max-height: 200px; display: block; margin: 0px auto;" src="{{ bde_logo }}">
                 <div style="width: 60px; height: 4px; background-color: {{ divider_color }}; margin: 15px auto;"></div>
-                <span style="
+                  <span style="
                     display: inline-block;
-                    background-color: black;
+                    background-color: white;
                     padding: 5px 5px;
-                    border-radius: 5px;">
-                  <p style="
-                      color: white;
-                      margin: 0;
-                      font-size: 16px;
-                      letter-spacing: 3px;
-                      text-transform: uppercase;
-                      font-weight: bold;">
+                    border-radius: 5px;
+                    color: black;
+                    font-size: 16px;
+                    letter-spacing: 3px;
+                    text-transform: uppercase;
+                    font-weight: bold;">
                     {{ title }}
-                  </p>
-                </span>
+                  </span>
               </td>
             </tr>
             <tr>
@@ -125,6 +128,45 @@ html_template = """
                 <p style="margin-top: 0">{{ signature | safe }}</p>
               </td>
             </tr>
+            <tr style="background: {{ header_bg_color }}; color: white;">
+                  <td style="padding: 3mm;">
+                    <table style="width: 100%;">
+                      <tbody>
+                        <tr style="background: {{ header_bg_color }}; color: white;">
+                          <td style="padding: 3mm;">
+                            <table style="width: 100%;">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <h2 style="margin: 0px; color: white;">Suivez
+                                      les BandiZZ sur :</h2>
+                                  </td>
+                                  <td style="display: flex;gap: 16px;justify-content: flex-end;">
+                                    <span class="Object" role="link" id="OBJ_PREFIX_DWT178_com_zimbra_url">
+                                      <span class="Object" role="link" id="OBJ_PREFIX_DWT186_com_zimbra_url">
+                                        <a style="color: white;" href="https://discord.gg/xVFzMuhtZ4" target="_blank">
+                                        <img alt="Discord" style="height: 50px;" src="{{ discord_logo }}"></a>
+                                        </span>
+                                      </span>
+                                      <span class="Object" role="link" id="OBJ_PREFIX_DWT179_com_zimbra_url">
+                                      <span class="Object" role="link" id="OBJ_PREFIX_DWT187_com_zimbra_url">
+                                      <a style="color: white;" href="https://www.instagram.com/liste_bandizz" target="_blank">
+                                      <img alt="Instagram" style="height: 50px;" src="{{ instagram_logo }}">
+                                      </a>
+                                      </span>
+                                      </span>
+                                      <span class="Object" role="link" id="OBJ_PREFIX_DWT180_com_zimbra_url">
+                                      <span class="Object" role="link" id="OBJ_PREFIX_DWT188_com_zimbra_url">
+                                      <a style="color: white;" href="https://www.youtube.com/@TheBandizz" target="_blank">
+                                      <img alt="SiteWeb" style="height: 50px;" src="{{ youtube_logo }}"></a>
+                                      </span>
+                                      </span>
+                                      </td>
+                    </tr>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
             <tr>
               <td style="padding: 3mm;">
                 {% for ps in ps_list %}
@@ -154,7 +196,10 @@ html_output = template.render(
     intro=intro,
     signature=signature, 
     header_bg_color=header_bg_color,
-    divider_color=divider_color
+    divider_color=divider_color,
+    discord_logo=discord_logo,
+    instagram_logo=instagram_logo,
+    youtube_logo=youtube_logo
 )
 
 # =======================
