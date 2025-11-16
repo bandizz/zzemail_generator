@@ -3,6 +3,7 @@
 import { ColorInput } from "@/components/ColorInput";
 import { EmailPreview } from "@/components/EmailPreview";
 import { PsEditor } from "@/components/PsEditor";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { SettingsSection } from "@/components/SettingsSection";
 import { SocialsEditor } from "@/components/SocialsEditor";
 import { TextInput } from "@/components/TextInput";
@@ -11,8 +12,8 @@ import {
   buildEmailHtml,
   type EmailConfig,
 } from "@/lib/emailTemplate";
-import type { ChangeEvent } from "react";
 import { useState } from "react";
+import "react-quill/dist/quill.snow.css";
 
 export default function Page() {
   const [config, setConfig] = useState<EmailConfig>(DEFAULT_CONFIG);
@@ -176,37 +177,12 @@ export default function Page() {
 
             <SettingsSection
               title="Corps"
-              description="Texte principal de l'email (HTML autorisé)."
+              description="Texte principal de l'email (éditeur riche : texte, listes, images, etc.)."
             >
-              <label
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 4,
-                  fontSize: 13,
-                }}
-              >
-                <span>Intro (HTML autorisé)</span>
-                <textarea
-                  value={config.introHtml}
-                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                    handleUpdate({
-                      introHtml: e.target.value,
-                    })
-                  }
-                  style={{
-                    minHeight: 140,
-                    resize: "vertical",
-                    padding: "8px 10px",
-                    borderRadius: 8,
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    background: "rgba(10,10,20,0.9)",
-                    color: "white",
-                    fontSize: 13,
-                    lineHeight: 1.4,
-                  }}
-                />
-              </label>
+              <RichTextEditor
+                value={config.bodyHtml}
+                onChange={(bodyHtml: string) => handleUpdate({ bodyHtml })}
+              />
             </SettingsSection>
 
             <SettingsSection
