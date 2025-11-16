@@ -3,8 +3,8 @@ from jinja2 import Template
 # =======================
 # Variables à personnaliser
 # =======================
-first_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo.png"
-end_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_alt2.png"
+first_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_compressed.png"
+end_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_alt_compressed.png"
 
 # Liste des PS SAUF le n°4
 # (on n’indique plus d’ID ici)
@@ -64,9 +64,9 @@ for i, ps in enumerate(raw_ps, start=1):
 title = "Ravi de vous rencontrer mes chers ZZs"
 intro = """
 Il est enfin l’heure des listes...
-<!-- ON VA ENFIN CHANGER CES VIEUX BIKERZZ -->
+<!-- ON VA ENFIN CHANGER CES VIEUX BIKERZZ (NAN JE RIGOLE ON VOUS AIME, SURTOUT JULES NOTRE PETIT FILLOT) -->
 <strong>ET</strong> on a hâte de vous présenter <strong>Bandizz</strong>,
-la liste préférée de ta liste préférée ! (cc Bra)
+la liste préférée de ta liste préférée !
 """
 
 signature = "C'était vos ReZZpo Comm de la liste Bandizz 🔫"
@@ -129,7 +129,7 @@ html_template = """
               <td style="padding: 3mm;">
                 {% for ps in ps_list %}
                   <p style="color: {{ ps.color }}; font-size: 16px; line-height: 1.4;">
-                    <strong>PS {{ ps.id }}</strong> : {{ ps.text }}
+                    <strong>P$ {{ ps.id }}</strong> : {{ ps.text }}
                   </p>
                 {% endfor %}
               </td>
