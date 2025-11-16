@@ -237,3 +237,15 @@ Thumbs.db
 venv
 node_modules
 .sass-cache
+
+# === Next.js / Vercel ===
+.next
+out
+.turbo
+.vercel
+
+# Next.js env files (garde .env si tu veux le versionner, mais pas les variantes locales)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
