@@ -4,7 +4,7 @@ from jinja2 import Template
 # Variables à personnaliser
 # =======================
 first_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo.png"
-end_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_alt.png"
+end_logo = "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_alt2.png"
 
 # Liste des PS SAUF le n°4
 # (on n’indique plus d’ID ici)
@@ -34,6 +34,10 @@ raw_ps = [
   { "text": "(Peut-être)", "color": "black"}
 ]
 
+if(len(raw_ps) %4 != 3):
+  print("Le nombre de PS n'est pas un multiple de 4")
+  exit(1)
+
 # =======================
 # Génération automatique des IDs + insertion du PS spécial n°4
 # =======================
@@ -62,19 +66,19 @@ intro = """
 Il est enfin l’heure des listes...
 <!-- ON VA ENFIN CHANGER CES VIEUX BIKERZZ -->
 <strong>ET</strong> on a hâte de vous présenter <strong>Bandizz</strong>,
-la liste qui va révolutionner votre vie étudiante à l'ISIMA ! 🚀
+la liste préférée de ta liste préférée ! (cc Bra)
 """
 
-signature = "C'était vos potentiels ReZZpo Comm de la liste Bandizz."
+signature = "C'était vos ReZZpo Comm de la liste Bandizz 🔫"
 
-bg_color_line_1 = "#FF00BA"
-bg_color_line_2 = "#FFD800"
+header_bg_color = "#FF4DAD"
+divider_color = "#fefefe"
 
 # =======================
 # Template HTML
 # =======================
 html_template = """
-<table style="margin: auto; max-width: 600px; width: 100%; border-collapse: collapse;">
+<table style="margin: auto; max-width: 600px; width: 100%; border-collapse: collapse; font-family: 'Segoe UI','Lucida Sans',sans-serif">
   <tbody>
     <tr>
       <td style="padding: 0px;">
@@ -82,20 +86,12 @@ html_template = """
           <tbody>
             <tr>
               <td style="
-                  background-color: black;
-                  background-image: repeating-linear-gradient(
-                      135deg,
-                      {{ bg_color_line_1 }} 0 10px,
-                      transparent 10px 50px,
-                      {{ bg_color_line_2 }} 50px 60px,
-                      transparent 60px 100px
-                  );
-                  background-repeat: repeat;
+                  background-color: {{ header_bg_color }};
                   background-position: center; /* centre le motif */
                   padding: 20px; 
                   text-align: center;">
-                <img alt="BDE Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="{{ bde_logo }}">
-                <div style="width: 60px; height: 4px; background-color: rgb(255, 215, 0); margin: 15px auto;"></div>
+                <img alt="BDE Logo" style="width: auto; max-height: 200px; display: block; margin: 0px auto;" src="{{ bde_logo }}">
+                <div style="width: 60px; height: 4px; background-color: {{ divider_color }}; margin: 15px auto;"></div>
                 <span style="
                     display: inline-block;
                     background-color: black;
@@ -126,7 +122,7 @@ html_template = """
             <tr>
               <td style="padding: 3mm; text-align:center;">
                 <img alt="BikerZZ Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="{{ bikerzz_logo }}">
-                <p>{{ signature | safe }}</p>
+                <p style="margin-top: 0">{{ signature | safe }}</p>
               </td>
             </tr>
             <tr>
@@ -157,8 +153,8 @@ html_output = template.render(
     title=title,
     intro=intro,
     signature=signature, 
-    bg_color_line_1=bg_color_line_1, 
-    bg_color_line_2=bg_color_line_2
+    header_bg_color=header_bg_color,
+    divider_color=divider_color
 )
 
 # =======================
