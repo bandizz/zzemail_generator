@@ -19,22 +19,15 @@ export default function Page() {
 
   return (
     <main
+      className="layout-main"
       style={{
         minHeight: "100vh",
         display: "flex",
         alignItems: "stretch",
         justifyContent: "center",
-        padding: "20px 12px",
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1.2fr)",
-          gap: 18,
-        }}
-      >
+      <div className="layout-grid">
         <section
           style={{
             display: "flex",
