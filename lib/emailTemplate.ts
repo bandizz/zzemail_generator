@@ -1,3 +1,5 @@
+import { LOGO_ALT_BASE64, LOGO_BASE64 } from "./logos";
+
 export interface PsItem {
   text: string;
   color: string;
@@ -8,7 +10,13 @@ export interface PsWithId extends PsItem {
 }
 
 export interface EmailConfig {
+  /**
+   * Contenu base64 (sans préfixe data:) du logo du haut.
+   */
   firstLogo: string;
+  /**
+   * Contenu base64 (sans préfixe data:) du logo du bas.
+   */
   endLogo: string;
   title: string;
   bodyHtml: string;
@@ -41,10 +49,9 @@ export interface SocialItem {
   url: string;
 }
 
-const DEFAULT_FIRST_LOGO =
-  "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_compressed.png";
-const DEFAULT_END_LOGO =
-  "https://raw.githubusercontent.com/bandizz/images/refs/heads/main/logo_alt_compressed.png";
+// Valeurs par défaut : contenu base64 embarqué via les fichiers dans `assets/`.
+const DEFAULT_FIRST_LOGO = LOGO_BASE64;
+const DEFAULT_END_LOGO = LOGO_ALT_BASE64;
 export const DEFAULT_CONFIG: EmailConfig = {
   firstLogo: DEFAULT_FIRST_LOGO,
   endLogo: DEFAULT_END_LOGO,
@@ -256,7 +263,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                   padding: 20px; 
                   color: #fff;
                   text-align: center;">
-                <img alt="BDE Logo" style="width: auto; max-height: 200px; display: block; margin: 0px auto;" src="${escapeHtml(
+                <img alt="Logo BandiZZ" style="width: auto; max-height: 200px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
                   firstLogo
                 )}">
                 <div style="width: 60px; height: 4px; background-color: ${safeDividerColor}; margin: 15px auto;"></div>
@@ -283,7 +290,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
             </tr>
             <tr>
               <td style="padding: 3mm; text-align:center;">
-                <img alt="BikerZZ Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="${escapeHtml(
+                <img alt="BandiZZ Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
                   endLogo
                 )}">
                 <p style="margin-top: 0; color: #333;">${safeSignature}</p>

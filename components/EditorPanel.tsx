@@ -25,7 +25,7 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
           "0 18px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02)",
         display: "flex",
         flexDirection: "column",
-        gap: 14
+        gap: 14,
       }}
     >
       <EditorHeader />
@@ -34,7 +34,7 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 12
+          gap: 12,
         }}
       >
         <SettingsSection
@@ -45,7 +45,7 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-              gap: 10
+              gap: 10,
             }}
           >
             <TextInput
@@ -59,12 +59,12 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
               onChange={(v) => onUpdate({ signature: v })}
             />
             <TextInput
-              label="Logo du haut (URL)"
+              label="Logo du haut (image base64)"
               value={config.firstLogo}
               onChange={(v) => onUpdate({ firstLogo: v })}
             />
             <TextInput
-              label="Logo du bas (URL)"
+              label="Logo du bas (image base64)"
               value={config.endLogo}
               onChange={(v) => onUpdate({ endLogo: v })}
             />
@@ -105,11 +105,12 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
           title="PS"
           description="Liste de P$ avec P$ spécial #4."
         >
-          <PsEditor psRaw={config.psRaw} setPsRaw={(psRaw) => onUpdate({ psRaw })} />
+          <PsEditor
+            psRaw={config.psRaw}
+            setPsRaw={(psRaw) => onUpdate({ psRaw })}
+          />
         </SettingsSection>
       </div>
     </section>
   );
 }
-
-
