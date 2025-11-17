@@ -20,8 +20,22 @@ export function useEmailActions(config: EmailConfig): EmailActions {
     downloaded: false,
   });
 
+  const ensureHasTitle = (): boolean => {
+    if (!config.title || config.title.trim().length === 0) {
+      // Simple guard pour éviter de générer un email sans titre
+      alert(
+        "Le titre ne peut pas être vide. Merci d'en renseigner un avant de continuer."
+      );
+      return false;
+    }
+    return true;
+  };
+
   const copyHtml = async () => {
     try {
+      if (!ensureHasTitle()) {
+        return;
+      }
       const html = buildEmailHtml(config);
       await navigator.clipboard.writeText(html);
       setState((prev) => ({ ...prev, copied: true }));
@@ -33,6 +47,9 @@ export function useEmailActions(config: EmailConfig): EmailActions {
 
   const copyRendered = async () => {
     try {
+      if (!ensureHasTitle()) {
+        return;
+      }
       const html = buildEmailHtml(config);
 
       if ("clipboard" in navigator && "write" in navigator.clipboard) {
@@ -54,6 +71,9 @@ export function useEmailActions(config: EmailConfig): EmailActions {
   };
 
   const downloadHtml = () => {
+    if (!ensureHasTitle()) {
+      return;
+    }
     const html = buildEmailHtml(config);
     const blob = new Blob([html], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
