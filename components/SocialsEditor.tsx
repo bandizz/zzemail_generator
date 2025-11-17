@@ -1,5 +1,9 @@
+import type {
+  EmailConfig,
+  SocialItem,
+  SocialProvider,
+} from "@/lib/emailTemplate";
 import type { ChangeEvent } from "react";
-import type { EmailConfig, SocialItem, SocialProvider } from "@/lib/emailTemplate";
 
 const PROVIDER_OPTIONS: { value: SocialProvider; label: string }[] = [
   { value: "discord", label: "Discord" },
@@ -13,7 +17,7 @@ const PROVIDER_OPTIONS: { value: SocialProvider; label: string }[] = [
   { value: "whatsapp", label: "WhatsApp" },
   { value: "twitch", label: "Twitch" },
   { value: "github", label: "GitHub" },
-  { value: "website", label: "Site web" }
+  { value: "website", label: "Site web" },
 ];
 
 export interface SocialsEditorProps {
@@ -38,8 +42,8 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
       ...socials,
       {
         provider: "instagram",
-        url: ""
-      }
+        url: "",
+      },
     ]);
   };
 
@@ -53,14 +57,14 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 8
+        gap: 8,
       }}
     >
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <span style={{ fontSize: 13 }}>
@@ -75,10 +79,9 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
             padding: "4px 10px",
             fontSize: 12,
             cursor: "pointer",
-            background:
-              "linear-gradient(120deg, rgba(255, 77, 173, 0.9), rgba(255, 196, 0, 0.9))",
-            color: "#111",
-            fontWeight: 600
+            background: "linear-gradient(135deg, #ff4dad,rgb(251, 56, 160))",
+            color: "#fefefe",
+            fontWeight: 600,
           }}
         >
           + Ajouter un réseau
@@ -89,7 +92,7 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 6
+          gap: 6,
         }}
       >
         {socials.map((social, index) => (
@@ -99,13 +102,17 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
               display: "grid",
               gridTemplateColumns: "minmax(120px, 0.7fr) minmax(0, 1.6fr) auto",
               gap: 8,
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <select
               value={social.provider}
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                handleChange(index, "provider", e.target.value as SocialProvider)
+                handleChange(
+                  index,
+                  "provider",
+                  e.target.value as SocialProvider
+                )
               }
               style={{
                 padding: "5px 8px",
@@ -113,7 +120,7 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
                 border: "1px solid rgba(255,255,255,0.15)",
                 background: "rgba(10,10,20,0.9)",
                 color: "white",
-                fontSize: 12
+                fontSize: 12,
               }}
             >
               {PROVIDER_OPTIONS.map((opt) => (
@@ -134,7 +141,7 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
                 border: "1px solid rgba(255,255,255,0.15)",
                 background: "rgba(10,10,20,0.9)",
                 color: "white",
-                fontSize: 12
+                fontSize: 12,
               }}
             />
             <button
@@ -147,7 +154,7 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
                 fontSize: 11,
                 cursor: "pointer",
                 background: "rgba(255,255,255,0.04)",
-                color: "#f66"
+                color: "#f66",
               }}
             >
               Suppr
@@ -158,5 +165,3 @@ export function SocialsEditor({ socials, setSocials }: SocialsEditorProps) {
     </div>
   );
 }
-
-

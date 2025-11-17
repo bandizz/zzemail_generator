@@ -87,7 +87,7 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
         >
           <RichTextEditor
             value={config.bodyHtml}
-            onChange={(bodyHtml) => onUpdate({ bodyHtml })}
+            onChange={(bodyHtml: string) => onUpdate({ bodyHtml })}
           />
         </SettingsSection>
 

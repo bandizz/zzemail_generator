@@ -10,14 +10,8 @@ import "react-quill/dist/quill.snow.css";
 
 export default function Page() {
   const [config, setConfig] = useState<EmailConfig>(DEFAULT_CONFIG);
-  const {
-    copied,
-    copiedRendered,
-    downloaded,
-    copyHtml,
-    copyRendered,
-    downloadHtml,
-  } = useEmailActions(config);
+  const { copiedRendered, downloaded, copyRendered, downloadHtml } =
+    useEmailActions(config);
 
   const handleUpdate = (partial: Partial<EmailConfig>) => {
     setConfig((prev) => ({ ...prev, ...partial }));
@@ -41,19 +35,25 @@ export default function Page() {
           gap: 18,
         }}
       >
-        <EditorPanel config={config} onUpdate={handleUpdate} />
-
-        <section>
-          <EmailPreview config={config} />
+        <section
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
+        >
+          <EditorPanel config={config} onUpdate={handleUpdate} />
           <ActionsBar
-            copied={copied}
             copiedRendered={copiedRendered}
             downloaded={downloaded}
-            onCopyHtml={copyHtml}
             onCopyRendered={copyRendered}
             onDownload={downloadHtml}
             onReset={() => setConfig(DEFAULT_CONFIG)}
           />
+        </section>
+
+        <section>
+          <EmailPreview config={config} />
         </section>
       </div>
     </main>

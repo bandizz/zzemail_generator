@@ -2,20 +2,17 @@ import { buildEmailHtml, type EmailConfig } from "@/lib/emailTemplate";
 import { useState } from "react";
 
 interface EmailActionsState {
-  copied: boolean;
   copiedRendered: boolean;
   downloaded: boolean;
 }
 
 interface EmailActions extends EmailActionsState {
-  copyHtml: () => Promise<void>;
   copyRendered: () => Promise<void>;
   downloadHtml: () => void;
 }
 
 export function useEmailActions(config: EmailConfig): EmailActions {
   const [state, setState] = useState<EmailActionsState>({
-    copied: false,
     copiedRendered: false,
     downloaded: false,
   });
@@ -29,20 +26,6 @@ export function useEmailActions(config: EmailConfig): EmailActions {
       return false;
     }
     return true;
-  };
-
-  const copyHtml = async () => {
-    try {
-      if (!ensureHasTitle()) {
-        return;
-      }
-      const html = buildEmailHtml(config);
-      await navigator.clipboard.writeText(html);
-      setState((prev) => ({ ...prev, copied: true }));
-      setTimeout(() => setState((prev) => ({ ...prev, copied: false })), 1600);
-    } catch (e) {
-      console.error(e);
-    }
   };
 
   const copyRendered = async () => {
@@ -93,7 +76,6 @@ export function useEmailActions(config: EmailConfig): EmailActions {
 
   return {
     ...state,
-    copyHtml,
     copyRendered,
     downloadHtml,
   };

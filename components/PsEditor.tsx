@@ -61,9 +61,8 @@ export function PsEditor({ psRaw, setPsRaw }: PsEditorProps) {
             padding: "4px 10px",
             fontSize: 12,
             cursor: "pointer",
-            background:
-              "linear-gradient(120deg, rgba(255, 77, 173, 0.9), rgba(255, 196, 0, 0.9))",
-            color: "#111",
+            background: "linear-gradient(135deg, #ff4dad,rgb(251, 56, 160))",
+            color: "#fefefe",
             fontWeight: 600,
           }}
         >
