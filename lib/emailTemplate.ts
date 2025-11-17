@@ -229,7 +229,21 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     .join("\n");
 
   return `
-<table style="margin: auto; max-width: 600px; width: 100%; border-collapse: collapse; font-family: 'Segoe UI','Lucida Sans',sans-serif">
+<style>
+  .zzemail-root-table {
+    margin: auto;
+    max-width: 600px;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI','Lucida Sans',sans-serif;
+  }
+
+  .zzemail-root-table img {
+    max-width: 95%;
+    height: auto;
+  }
+</style>
+<table class="zzemail-root-table" style="margin: auto; max-width: 600px; width: 100%; border-collapse: collapse; font-family: 'Segoe UI','Lucida Sans',sans-serif">
   <tbody>
     <tr>
       <td style="padding: 0px;">
