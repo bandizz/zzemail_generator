@@ -1,4 +1,7 @@
-import { buildEmailHtml, type EmailConfig } from "@/lib/emailTemplate";
+import {
+  buildEmailHtmlWithEmojis,
+  type EmailConfig,
+} from "@/lib/emailTemplate";
 import { useState } from "react";
 
 interface EmailActionsState {
@@ -33,7 +36,7 @@ export function useEmailActions(config: EmailConfig): EmailActions {
       if (!ensureHasTitle()) {
         return;
       }
-      const html = buildEmailHtml(config);
+      const html = await buildEmailHtmlWithEmojis(config);
 
       if ("clipboard" in navigator && "write" in navigator.clipboard) {
         const blob = new Blob([html], { type: "text/html" });
@@ -54,24 +57,33 @@ export function useEmailActions(config: EmailConfig): EmailActions {
   };
 
   const downloadHtml = () => {
+    // On ne peut pas rendre cette fonction elle-même async (API du hook),
+    // on lance donc l'opération asynchrone en interne.
+    const run = async () => {
+      if (!ensureHasTitle()) {
+        return;
+      }
+      const html = await buildEmailHtmlWithEmojis(config);
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "email_generated.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setState((prev) => ({ ...prev, downloaded: true }));
+      setTimeout(
+        () => setState((prev) => ({ ...prev, downloaded: false })),
+        1600
+      );
+    };
+
     if (!ensureHasTitle()) {
       return;
     }
-    const html = buildEmailHtml(config);
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "email_generated.html";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    setState((prev) => ({ ...prev, downloaded: true }));
-    setTimeout(
-      () => setState((prev) => ({ ...prev, downloaded: false })),
-      1600
-    );
+    void run();
   };
 
   return {
