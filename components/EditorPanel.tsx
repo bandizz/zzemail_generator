@@ -83,7 +83,7 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
 
         <SettingsSection
           title="Corps"
-          description="Texte principal de l'email (éditeur riche : texte, listes, images, etc.)."
+          description="Texte principal de l'email. Vous pouvez insérer un séparateur horizontal en tapant [SEPARATOR]."
         >
           <RichTextEditor
             value={config.bodyHtml}
