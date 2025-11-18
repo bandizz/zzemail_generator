@@ -112,6 +112,12 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     max-width: 95%;
     height: auto;
   }
+
+  blockquote {
+    margin: 0 0 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid #ccc;
+  }
 </style>
 <table class="zzemail-root-table" style="margin: auto; max-width: 600px; width: 100%; border-collapse: collapse; font-family: 'Segoe UI','Lucida Sans',sans-serif">
   <tbody>
