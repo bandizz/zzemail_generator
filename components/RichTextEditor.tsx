@@ -12,13 +12,18 @@ export interface RichTextEditorProps {
 
 const modules = {
   toolbar: [
-    [{ header: [1, 2, 3, false] }],
+    [{ header: [1, 2, 3, 4, false] }],
+    [{ font: [] }, { size: [] }],
     ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
     [{ list: "ordered" }, { list: "bullet" }],
-    ["link", "image"],
+    [{ indent: "-1" }, { indent: "+1" }],
     [{ align: [] }],
-    ["clean"]
-  ]
+    ["blockquote", "code-block"],
+    ["link", "image", "video"],
+    ["clean"],
+  ],
 };
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
@@ -28,7 +33,7 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
         borderRadius: 8,
         border: "1px solid rgba(255,255,255,0.15)",
         overflow: "hidden",
-        background: "rgba(10,10,20,0.9)"
+        background: "rgba(10,10,20,0.9)",
       }}
     >
       {/* ReactQuill injecte son propre contenu HTML, qu'on stocke dans bodyHtml */}
@@ -43,5 +48,3 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     </div>
   );
 }
-
-
