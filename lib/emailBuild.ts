@@ -97,8 +97,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
       );
       return `
                                     <span class="Object" role="link">
-                                      <a style="color: white;" href="${href}" target="_blank">
-                                        <img alt="${alt}" style="height: 50px;" src="${iconSrc}">
+                                      <a style="color: white; text-decoration: none; display: inline-block;" href="${href}" target="_blank">
+                                        <img alt="${alt}" style="height: 40px; object-fit: contain; display: block;" src="${iconSrc}">
                                       </a>
                                     </span>`;
     })
@@ -189,8 +189,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                                     <h2 style="margin: 0px; color: white;">Suivez
                                       les BandiZZ sur :</h2>
                                   </td>
-                                  <td style="display: flex;gap: 16px;justify-content: flex-end;">
-${socialHtml}
+                                  <td style="text-align: right;">
+                                    ${socialHtml}
                                   </td>
                                 </tr>
                               </tbody>
