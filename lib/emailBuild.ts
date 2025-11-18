@@ -113,9 +113,10 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
 <style>
   .zzemail-root-table {
     margin: auto;
-    max-width: 600px;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
     border-collapse: collapse;
+    table-layout: fixed;
     font-family: 'Segoe UI','Lucida Sans',sans-serif;
   }
 
@@ -130,7 +131,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     border-left: 3px solid #ccc;
   }
 </style>
-<table class="zzemail-root-table" style="margin: auto; max-width: 600px; width: 100%; border-collapse: collapse; font-family: 'Segoe UI','Lucida Sans',sans-serif">
+<table class="zzemail-root-table" style="margin: auto; width: 100%; max-width: 100%; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI','Lucida Sans',sans-serif">
   <tbody>
     <tr>
       <td style="padding: 0px;">
