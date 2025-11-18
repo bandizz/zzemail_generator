@@ -32,16 +32,27 @@ function applyBodyShortcodes(html: string | null | undefined): string {
   const hrHtml =
     '<hr style="width: 100%; height: 2px; background-color: rgb(221, 221, 221); margin: 25px 0px; border: none;">';
 
-  // 1) Cas classique avec Quill : le mot-clé est dans un paragraphe seul.{
+  // 1) Cas classique avec Quill : le mot-clé est dans un paragraphe seul.
   const escapedToken = escapeForRegExp(BODY_SEPARATOR_TOKEN);
 
-  // 1) Cas classique avec Quill : le mot-clé est dans un paragraphe seul.
   const paragraphRegex = new RegExp(`<p>\\s*${escapedToken}\\s*<\\/p>`, "g");
   result = result.replace(paragraphRegex, hrHtml);
 
   // 2) Fallback : on remplace le token brut où qu'il soit.
   const tokenRegex = new RegExp(escapedToken, "g");
   result = result.replace(tokenRegex, hrHtml);
+
+  // 3) Cartes colorées : [CARD color="#000"] ... [/CARD]
+  const cardRegex = /\[CARD\s+color="([^"]*)"\]([\s\S]*?)\[\/CARD\]/gi;
+
+  result = result.replace(
+    cardRegex,
+    (_match, colorRaw: string, inner: string) => {
+      const bgColor = (colorRaw || "").trim() || "#f5f5f5";
+
+      return `<div style="background-color: ${bgColor}; border-radius: 12px; padding: 16px; margin: 16px 0;">${inner}</div>`;
+    }
+  );
 
   return result;
 }

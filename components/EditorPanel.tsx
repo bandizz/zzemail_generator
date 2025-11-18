@@ -83,7 +83,7 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
 
         <SettingsSection
           title="Corps"
-          description="Texte principal de l'email. Vous pouvez insérer un séparateur horizontal en tapant [SEPARATOR]."
+          description='Texte principal du mail. Mots clés disponibles : [SEPARATOR] et [CARD color="#000"] ... [/CARD].'
         >
           <RichTextEditor
             value={config.bodyHtml}

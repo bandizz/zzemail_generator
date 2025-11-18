@@ -32,7 +32,7 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       style={{
         borderRadius: 8,
         border: "1px solid rgba(255,255,255,0.15)",
-        overflow: "hidden",
+        overflow: "auto",
         background: "rgba(10,10,20,0.9)",
       }}
     >
