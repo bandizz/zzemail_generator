@@ -126,7 +126,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
 <style>
   blockquote {
     margin: 0 0 0 10px;
-    padding-left: 10px;
+    padding: 0 0 0 10px;
     border-left: 3px solid #ccc;
   }
 </style>
