@@ -1,11 +1,11 @@
-import { getSocialIconSrc } from "./emailSocials";
+import { replaceEmojisWithImages } from "./emailEmoji";
 import { buildPsList } from "./emailPs";
+import { getSocialIconSrc } from "./emailSocials";
 import {
   DEFAULT_CONFIG,
   type EmailConfig,
   type SocialItem,
 } from "./emailTypes";
-import { replaceEmojisWithImages } from "./emailEmoji";
 
 export function escapeHtml(str: string | null | undefined): string {
   if (str == null) return "";
@@ -15,6 +15,35 @@ export function escapeHtml(str: string | null | undefined): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+// Mot-clé à taper dans l'éditeur pour insérer un séparateur horizontal.
+export const BODY_SEPARATOR_TOKEN = "[SEPARATOR]" as const;
+
+function escapeForRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function applyBodyShortcodes(html: string | null | undefined): string {
+  if (!html) return "";
+
+  let result = html;
+
+  const hrHtml =
+    '<hr style="width: 100%; height: 2px; background-color: rgb(221, 221, 221); margin: 25px 0px; border: none;">';
+
+  // 1) Cas classique avec Quill : le mot-clé est dans un paragraphe seul.{
+  const escapedToken = escapeForRegExp(BODY_SEPARATOR_TOKEN);
+
+  // 1) Cas classique avec Quill : le mot-clé est dans un paragraphe seul.
+  const paragraphRegex = new RegExp(`<p>\\s*${escapedToken}\\s*<\\/p>`, "g");
+  result = result.replace(paragraphRegex, hrHtml);
+
+  // 2) Fallback : on remplace le token brut où qu'il soit.
+  const tokenRegex = new RegExp(escapedToken, "g");
+  result = result.replace(tokenRegex, hrHtml);
+
+  return result;
 }
 
 export function buildEmailHtml(config?: Partial<EmailConfig>): string {
@@ -55,6 +84,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                                     </span>`;
     })
     .join("\n");
+
+  const bodyWithShortcodes = applyBodyShortcodes(bodyHtml);
 
   const psHtml = psList
     .map(
@@ -116,7 +147,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
             <tr>
               <td style="padding: 3mm; color: #333">
                 <p style="font-size: 20px; line-height: 1;">
-                  ${bodyHtml || ""}
+                  ${bodyWithShortcodes}
                 </p>
               </td>
             </tr>
@@ -177,5 +208,3 @@ export async function buildEmailHtmlWithEmojis(
   const html = buildEmailHtml(config);
   return replaceEmojisWithImages(html);
 }
-
-
