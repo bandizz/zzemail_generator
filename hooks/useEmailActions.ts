@@ -64,7 +64,9 @@ export function useEmailActions(config: EmailConfig): EmailActions {
         return;
       }
       const html = await buildEmailHtmlWithEmojis(config);
-      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const blob = new Blob(["\uFEFF", html], {
+        type: "text/html;charset=utf-8",
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
