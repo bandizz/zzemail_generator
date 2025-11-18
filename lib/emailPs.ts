@@ -1,7 +1,11 @@
 import type { PsItem, PsWithId } from "./emailTypes";
-import { SPECIAL_PS_TEXT } from "./emailTypes";
 
-export function buildPsList(psRaw: PsItem[] | undefined): PsWithId[] {
+export function buildPsList(
+  psRaw: PsItem[] | undefined,
+  specialPsLabel: string,
+  specialPsText: string,
+  specialPsColor: string
+): PsWithId[] {
   const result: PsWithId[] = [];
   const list = Array.isArray(psRaw) ? psRaw : [];
 
@@ -11,15 +15,17 @@ export function buildPsList(psRaw: PsItem[] | undefined): PsWithId[] {
       id: index + 1,
       text: ps?.text ?? "",
       color: ps?.color || "black",
+      label: ps?.label,
     });
   });
 
-  // P$4 : traditionnel et non modifiable
+  // P$4 : traditionnel (texte/config dédié)
   if (list.length >= 3) {
     result.push({
       id: 4,
-      text: SPECIAL_PS_TEXT,
-      color: "black",
+      text: specialPsText,
+      color: specialPsColor || "black",
+      label: specialPsLabel,
     });
   }
 
@@ -29,6 +35,7 @@ export function buildPsList(psRaw: PsItem[] | undefined): PsWithId[] {
       id: 5 + index,
       text: ps?.text ?? "",
       color: ps?.color || "black",
+      label: ps?.label,
     });
   });
 

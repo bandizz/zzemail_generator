@@ -1,6 +1,12 @@
 import { LOGO_ALT_BASE64, LOGO_BASE64 } from "./logos";
 
 export interface PsItem {
+  /**
+   * Préfixe affiché avant l'index (ex: "P$", "QT", "EV"...).
+   * - undefined  → on utilisera "P$" par défaut dans le rendu
+   * - "" (vide)  → aucun préfixe n'est affiché (juste le numéro)
+   */
+  label?: string;
   text: string;
   color: string;
 }
@@ -42,6 +48,11 @@ export interface EmailConfig {
   signature: string;
   headerBgColor: string;
   dividerColor: string;
+  /**
+   * Préfixe spécifique pour le P$ spécial (P$4).
+   * Même logique que PsItem.label (undefined → "P$", "" → pas de préfixe).
+   */
+  specialPsLabel: string;
   specialPsText: string;
   specialPsColor: string;
   psRaw: PsItem[];
@@ -62,13 +73,14 @@ export const DEFAULT_CONFIG: EmailConfig = {
   signature: "C'était vos ReZZpo Comm de la liste Bandizz 🔫",
   headerBgColor: "#FF4DAD",
   dividerColor: "#fefefe",
+  specialPsLabel: "P$",
   specialPsText: SPECIAL_PS_TEXT,
   specialPsColor: "black",
   // 3 P$ minimum obligatoires, vides au départ mais à remplir
   psRaw: [
-    { text: "", color: "black" },
-    { text: "", color: "black" },
-    { text: "", color: "black" },
+    { label: "P$", text: "", color: "black" },
+    { label: "P$", text: "", color: "black" },
+    { label: "P$", text: "", color: "black" },
   ],
   socials: [
     {
@@ -85,5 +97,3 @@ export const DEFAULT_CONFIG: EmailConfig = {
     },
   ],
 };
-
-

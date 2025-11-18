@@ -5,12 +5,14 @@ export interface PsExtraBlocksProps {
   psRaw: PsItem[];
   onChangePs: (index: number, field: keyof PsItem, value: string) => void;
   onRemoveBlock: (blockIndex: number) => void;
+  advanced: boolean;
 }
 
 export function PsExtraBlocks({
   psRaw,
   onChangePs,
   onRemoveBlock,
+  advanced,
 }: PsExtraBlocksProps) {
   const extraCount = Math.max(Math.ceil((psRaw.length - 3) / 4), 0);
 
@@ -45,11 +47,31 @@ export function PsExtraBlocks({
                   key={globalIndex}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "minmax(0,1fr) auto",
+                    gridTemplateColumns: advanced
+                      ? "auto minmax(0,1fr) auto"
+                      : "minmax(0,1fr) auto",
                     gap: 6,
                     alignItems: "center",
                   }}
                 >
+                  {advanced && (
+                    <input
+                      value={ps.label ?? ""}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        onChangePs(globalIndex, "label", e.target.value)
+                      }
+                      placeholder="P$"
+                      style={{
+                        padding: "4px 6px",
+                        borderRadius: 6,
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        background: "rgba(10,10,20,0.9)",
+                        color: "white",
+                        fontSize: 11,
+                        width: 56,
+                      }}
+                    />
+                  )}
                   <input
                     value={ps.text}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>

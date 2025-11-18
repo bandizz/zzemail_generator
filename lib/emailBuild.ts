@@ -67,9 +67,17 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     headerBgColor,
     dividerColor,
     psRaw,
+    specialPsLabel,
+    specialPsText,
+    specialPsColor,
   } = { ...DEFAULT_CONFIG, ...(config || {}) };
 
-  const psList = buildPsList(psRaw);
+  const psList = buildPsList(
+    psRaw,
+    specialPsLabel,
+    specialPsText,
+    specialPsColor
+  );
   const socials: SocialItem[] =
     (config && Array.isArray(config.socials) && config.socials.length
       ? config.socials
@@ -99,39 +107,30 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
   const bodyWithShortcodes = applyBodyShortcodes(bodyHtml);
 
   const psHtml = psList
-    .map(
-      (ps) => `
+    .map((ps) => {
+      // undefined → "P$" (par défaut), "" → aucun préfixe
+      const prefix = ps.label === undefined ? "P$" : ps.label;
+      const labelPart = prefix ? `${escapeHtml(prefix)} ` : "";
+      return `
                   <p style="color: ${escapeHtml(
                     ps.color
                   )}; font-size: 16px; line-height: 1.4;">
-                    <strong>P$ ${ps.id}</strong> : ${escapeHtml(ps.text)}
-                  </p>`
-    )
+                    <strong>${labelPart}${ps.id}</strong> : ${escapeHtml(
+        ps.text
+      )}
+                  </p>`;
+    })
     .join("\n");
 
   return `
 <style>
-  .zzemail-root-table {
-    margin: auto;
-    width: 100% !important;
-    max-width: 100% !important;
-    border-collapse: collapse;
-    table-layout: fixed;
-    font-family: 'Segoe UI','Lucida Sans',sans-serif;
-  }
-
-  .zzemail-root-table img {
-    max-width: 95%;
-    height: auto;
-  }
-
   blockquote {
     margin: 0 0 0 10px;
     padding-left: 10px;
     border-left: 3px solid #ccc;
   }
 </style>
-<table class="zzemail-root-table" style="margin: auto; width: 100%; max-width: 100%; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI','Lucida Sans',sans-serif">
+<table class="zzemail-root-table CSCYT, BH ZA XY JQNU ALXYNZE MDIOG://MASRUWO." style="margin: auto; width: 100%; max-width: 600px; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI','Lucida Sans',sans-serif">
   <tbody>
     <tr>
       <td style="padding: 0px;">

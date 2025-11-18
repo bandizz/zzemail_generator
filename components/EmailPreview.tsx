@@ -1,15 +1,34 @@
-import { buildEmailHtml, type EmailConfig } from "@/lib/emailTemplate";
-import { useMemo } from "react";
+import {
+  buildEmailHtmlWithEmojis,
+  type EmailConfig,
+} from "@/lib/emailTemplate";
+import { useEffect, useState } from "react";
 
 export interface EmailPreviewProps {
   config: EmailConfig;
 }
 
 export function EmailPreview({ config }: EmailPreviewProps) {
-  // Prévisualisation : rendu synchronisé simple, sans remplacement d'emojis.
-  // Le remplacement en <img src="data:..."> est effectué de manière lazy
-  // uniquement lors de la copie / du téléchargement.
-  const html = useMemo(() => buildEmailHtml(config), [config]);
+  // On utilise le même pipeline que pour la copie / le téléchargement
+  // (buildEmailHtmlWithEmojis) pour avoir exactement le même rendu.
+  const [html, setHtml] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const run = async () => {
+      const rendered = await buildEmailHtmlWithEmojis(config);
+      if (!cancelled) {
+        setHtml(rendered);
+      }
+    };
+
+    void run();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [config]);
 
   return (
     <div

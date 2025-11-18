@@ -108,6 +108,25 @@ export function EditorPanel({ config, onUpdate }: EditorPanelProps) {
           <PsEditor
             psRaw={config.psRaw}
             setPsRaw={(psRaw) => onUpdate({ psRaw })}
+            specialPsLabel={config.specialPsLabel}
+            specialPsText={config.specialPsText}
+            specialPsColor={config.specialPsColor}
+            setSpecialPs={(partial) =>
+              onUpdate({
+                specialPsLabel:
+                  partial.label !== undefined
+                    ? partial.label
+                    : config.specialPsLabel,
+                specialPsText:
+                  partial.text !== undefined
+                    ? partial.text
+                    : config.specialPsText,
+                specialPsColor:
+                  partial.color !== undefined
+                    ? partial.color
+                    : config.specialPsColor,
+              })
+            }
           />
         </SettingsSection>
       </div>
