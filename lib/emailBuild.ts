@@ -125,9 +125,16 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
   return `
 <style>
   blockquote {
-    margin: 0 0 0 10px; !important
-    padding: 0 0 0 10px; !important
+    margin: 0 0 0 10px !important;
+    padding: 0 0 0 10px !important;
     border-left: 3px solid #ccc;
+  }
+
+  .zzemail-body img {
+    max-width: 95%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
 </style>
 <table class="zzemail-root-table" style="margin: auto; width: 100%; max-width: 600px; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI','Lucida Sans',sans-serif">
@@ -162,7 +169,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
               </td>
             </tr>
             <tr>
-              <td style="padding: 3mm; color: #333; font-size: 20px; line-height: 1;">
+              <td class="zzemail-body" style="padding: 3mm; color: #333; font-size: 20px; line-height: 1;">
                 ${bodyWithShortcodes}
               </td>
             </tr>
