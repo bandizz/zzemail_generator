@@ -125,12 +125,12 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
   return `
 <style>
   blockquote {
-    margin: 0 0 0 10px;
-    padding: 0 0 0 10px;
+    margin: 0 0 0 10px; !important
+    padding: 0 0 0 10px; !important
     border-left: 3px solid #ccc;
   }
 </style>
-<table class="zzemail-root-table CSCYT, BH ZA XY JQNU ALXYNZE MDIOG://MASRUWO." style="margin: auto; width: 100%; max-width: 600px; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI','Lucida Sans',sans-serif">
+<table class="zzemail-root-table" style="margin: auto; width: 100%; max-width: 600px; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI','Lucida Sans',sans-serif">
   <tbody>
     <tr>
       <td style="padding: 0px;">
@@ -162,10 +162,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
               </td>
             </tr>
             <tr>
-              <td style="padding: 3mm; color: #333">
-                <p style="font-size: 20px; line-height: 1;">
-                  ${bodyWithShortcodes}
-                </p>
+              <td style="padding: 3mm; color: #333; font-size: 20px; line-height: 1;">
+                ${bodyWithShortcodes}
               </td>
             </tr>
             <tr>
