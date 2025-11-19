@@ -141,7 +141,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
   <tbody>
     <tr>
       <td style="padding: 0px;">
-        <table style="border: 1px solid rgb(194, 196, 214); background-color: rgb(252, 252, 253); border-collapse: collapse;">
+        <table style="border: 1px solid rgb(194, 196, 214); background-color: white; border-collapse: collapse;">
           <tbody>
             <tr>
               <td style="
