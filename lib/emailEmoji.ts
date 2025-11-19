@@ -104,7 +104,7 @@ export async function replaceEmojisWithImages(html: string): Promise<string> {
     const dataUrl = emojiToDataUrl.get(char);
 
     if (dataUrl) {
-      result += `<img src="${dataUrl}" alt="${char}" style="height: 1em; width: 1em; vertical-align: -0.1em;" />`;
+      result += `<img class="zz-emoji" src="${dataUrl}" alt="${char}" style="height: 1em; width: 1em; vertical-align: -0.1em;" />`;
     } else {
       result += char;
     }
@@ -114,5 +114,3 @@ export async function replaceEmojisWithImages(html: string): Promise<string> {
 
   return result;
 }
-
-

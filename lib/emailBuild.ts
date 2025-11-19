@@ -130,7 +130,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     border-left: 3px solid #ccc;
   }
 
-  .zzemail-body img {
+  .zzemail-body img:not(.zz-emoji) {
     max-width: 95%;
     height: auto;
     display: block;
