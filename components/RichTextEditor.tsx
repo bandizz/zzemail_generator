@@ -3,7 +3,32 @@
 import dynamic from "next/dynamic";
 import type { Dispatch, SetStateAction } from "react";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+    const Quill = (RQ as any).Quill;
+
+    if (Quill && typeof Quill.import === "function") {
+      const Image = Quill.import("formats/image");
+
+      class MaxWidthImage extends Image {
+        static create(value: unknown) {
+          const node = super.create(value) as HTMLImageElement;
+          node.style.maxWidth = "95%";
+          node.style.height = "auto";
+          node.style.display = "block";
+          node.style.margin = "0 auto";
+          return node;
+        }
+      }
+
+      Quill.register("formats/image", MaxWidthImage, true);
+    }
+
+    return RQ;
+  },
+  { ssr: false }
+);
 
 export interface RichTextEditorProps {
   value: string;
