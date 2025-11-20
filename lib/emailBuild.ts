@@ -57,6 +57,30 @@ function applyBodyShortcodes(html: string | null | undefined): string {
   return result;
 }
 
+function normalizeBodyImages(html: string | null | undefined): string {
+  if (!html) return "";
+
+  const STYLE_FRAGMENT =
+    "max-width:95%;height:auto;display:block;margin:0 auto;";
+
+  return html.replace(
+    /<img(?![^>]*class="zz-emoji")([^>]*?)>/gi,
+    (match, attrs) => {
+      const hasStyle = /style\s*=/.test(attrs);
+
+      if (hasStyle) {
+        return `<img${attrs.replace(
+          /style\s*=\s*"(.*?)"/i,
+          (matchStyle: string, s: string) => ` style="${s} ${STYLE_FRAGMENT}"`
+        )}>`;
+      }
+
+      // attrs commence déjà par un espace éventuel
+      return `<img style="${STYLE_FRAGMENT}"${attrs}>`;
+    }
+  );
+}
+
 export function buildEmailHtml(config?: Partial<EmailConfig>): string {
   const {
     firstLogo,
@@ -104,7 +128,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     })
     .join("\n");
 
-  const bodyWithShortcodes = applyBodyShortcodes(bodyHtml);
+  const bodyWithShortcodes = normalizeBodyImages(applyBodyShortcodes(bodyHtml));
 
   const psHtml = psList
     .map((ps) => {
