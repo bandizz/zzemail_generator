@@ -70,7 +70,7 @@ export const DEFAULT_CONFIG: EmailConfig = {
   endLogo: DEFAULT_END_LOGO,
   title: "",
   bodyHtml: "",
-  signature: "C'était vos ReZZpo Comm de la liste Bandizz 🔫",
+  signature: "C'était vos ReZZpo Comm de la liste BandiZZ 🔫",
   headerBgColor: "#FF4DAD",
   dividerColor: "#fefefe",
   specialPsLabel: "P$",
@@ -89,11 +89,11 @@ export const DEFAULT_CONFIG: EmailConfig = {
     },
     {
       provider: "instagram",
-      url: "https://www.instagram.com/liste_bandizz",
+      url: "https://www.instagram.com/liste_BandiZZ",
     },
     {
       provider: "youtube",
-      url: "https://www.youtube.com/@TheBandizz",
+      url: "https://www.youtube.com/@TheBandiZZ",
     },
   ],
 };

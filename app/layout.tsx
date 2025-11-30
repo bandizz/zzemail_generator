@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Bandizz Email Generator",
+  title: "BandiZZ Email Generator",
   description: "Générateur d'emails hyper custom pour les ZZs",
 };
 
