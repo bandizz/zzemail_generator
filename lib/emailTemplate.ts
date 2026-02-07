@@ -1,5 +1,6 @@
 export {
   DEFAULT_CONFIG,
+  BDE_CONFIG,
   SPECIAL_PS_TEXT,
   type EmailConfig,
   type PsItem,

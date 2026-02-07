@@ -26,6 +26,7 @@ function getSocialIconSlug(provider: SocialProvider): string {
     case "github":
       return "github";
     case "website":
+      return "website";
     default:
       return "globe";
   }
@@ -40,6 +41,7 @@ export function getSocialIconSrc(provider: SocialProvider): string {
 
   // Fallback : ancienne URL (SVG) vers le CDN Simple Icons
   const slug = getSocialIconSlug(provider);
+
   return `https://cdn.simpleicons.org/${slug}/ffffff`;
 }
 

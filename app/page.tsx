@@ -8,7 +8,7 @@ import { useEmailConfig } from "@/hooks/useEmailConfig";
 import "react-quill/dist/quill.snow.css";
 
 export default function Page() {
-  const { config, updateConfig, resetConfig } = useEmailConfig();
+  const { config, updateConfig, resetConfig, preset, setPreset } = useEmailConfig();
   const { copiedRendered, downloaded, copyRendered, downloadHtml } =
     useEmailActions(config);
 
@@ -30,7 +30,12 @@ export default function Page() {
             gap: 12,
           }}
         >
-          <EditorPanel config={config} onUpdate={updateConfig} />
+          <EditorPanel
+            config={config}
+            onUpdate={updateConfig}
+            preset={preset}
+            setPreset={setPreset}
+          />
           <ActionsBar
             copiedRendered={copiedRendered}
             downloaded={downloaded}

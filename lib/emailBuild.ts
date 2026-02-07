@@ -63,6 +63,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     endLogo,
     title,
     bodyHtml,
+    introHtml,
     signature,
     headerBgColor,
     dividerColor,
@@ -70,6 +71,13 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     specialPsLabel,
     specialPsText,
     specialPsColor,
+    showSocials,
+    showEndLogo,
+    showSpecialPs,
+    zzemainePlanningImage,
+    showZzemaineSection,
+    events,
+    socials,
   } = { ...DEFAULT_CONFIG, ...(config || {}) };
 
   const psList = buildPsList(
@@ -78,10 +86,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     specialPsText,
     specialPsColor
   );
-  const socials: SocialItem[] =
-    (config && Array.isArray(config.socials) && config.socials.length
-      ? config.socials
-      : DEFAULT_CONFIG.socials) ?? [];
+  const finalPsList = showSpecialPs === false ? psList.filter((p) => p.id !== 4) : psList;
 
   const safeTitle = escapeHtml(title);
   const safeSignature = escapeHtml(signature);
@@ -104,9 +109,109 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     })
     .join("\n");
 
+  const introWithShortcodes = applyBodyShortcodes(introHtml);
+
+  const endLogoHtml = showEndLogo
+    ? `
+            <tr>
+              <td style="padding: 3mm; text-align:center;">
+                <img alt="BandiZZ Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
+                  endLogo
+                )}">
+                <p style="margin-top: 16px; color: #333;">${safeSignature}</p>
+              </td>
+            </tr>
+            `
+    : "";
+
+  const socialsHtml = showSocials
+    ? `
+            <tr style="background: ${safeHeaderBgColor}; color: white;">
+                  <td style="padding: 3mm;">
+                    <table style="width: 100%;">
+                      <tbody>
+                        <tr style="background: ${safeHeaderBgColor}; color: white;">
+                          <td style="padding: 3mm;">
+                            <table style="width: 100%;">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <h2 style="margin: 0px; color: white;">Suivez le BDE sur :</h2>
+                                  </td>
+                                  <td style="text-align: right;">
+                                    ${socialHtml}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+            </tr>
+            `
+    : "";
+
   const bodyWithShortcodes = applyBodyShortcodes(bodyHtml);
 
-  const psHtml = psList
+  const introBlock = introWithShortcodes
+    ? `
+            <tr>
+              <td class="zzemail-body" style="padding: 3mm; color: #333; font-size: 20px; line-height: 1.6;">
+                ${introWithShortcodes}
+              </td>
+            </tr>
+            `
+    : "";
+
+  const zzemaineHtml = showZzemaineSection && zzemainePlanningImage
+    ? `
+            <tr>
+              <td style="padding: 3mm;">
+                <div style="background-color: #f5f5f5; border-radius: 12px; padding: 0; overflow: hidden;">
+                  <div style="background-color: ${safeHeaderBgColor}; color: white; padding: 12px; text-align: left;">
+                    <h3 style="margin: 0; font-size: 24px; letter-spacing: 1px;">Planning de la ZZemaine</h3>
+                  </div>
+                  <div style="text-align: center;">
+                    <img alt="Planning ZZemaine" style="width: 100%; max-width: 100%; height: auto; display: block;" src="data:image/png;base64,${escapeHtml(
+                      zzemainePlanningImage
+                    )}">
+                  </div>
+                </div>
+              </td>
+            </tr>
+            `
+    : "";
+
+  const eventsHtml = events && events.length > 0
+    ? `
+            <tr>
+              <td style="padding: 3mm;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 100%;">
+                  ${events.map((event) => {
+                    const eventImage = escapeHtml(event.eventImage || "");
+                    const eventTitle = escapeHtml(event.eventTitle || "");
+                    const eventDate = escapeHtml(event.eventDate || "");
+                    const eventTime = escapeHtml(event.eventTime || "");
+                    const eventLocation = escapeHtml(event.eventLocation || "");
+                    return `
+                    <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 15px;">
+                      ${eventImage ? `<img alt="" style="width: 100%; height: auto; display: block;" src="data:image/png;base64,${eventImage}">` : ""}
+                      <div style="padding: 20px;">
+                        <h3 style="margin: 0px 0px 10px; color: rgb(26, 26, 26); font-size: 20px;">${eventTitle}</h3>
+                        <p style="margin: 0px; color: rgb(102, 102, 102); font-size: 14px;">${eventDate}${eventTime ? ` • ${eventTime}` : ""}</p>
+                        <p style="margin: 10px 0px 0px; color: rgb(51, 51, 51);">${eventLocation}</p>
+                      </div>
+                    </div>`;
+                  }).join("")}
+                </div>
+              </td>
+            </tr>
+            `
+    : "";
+
+  const psHtml = finalPsList
     .map((ps) => {
       // undefined → "P$" (par défaut), "" → aucun préfixe
       const prefix = ps.label === undefined ? "P$" : ps.label;
@@ -143,7 +248,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                   padding: 20px; 
                   color: #fff;
                   text-align: center;">
-                <img alt="Logo BandiZZ" style="width: auto; max-height: 200px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
+                <img alt="Logo BandiZZ" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
                   firstLogo
                 )}">
                 <div style="width: 60px; height: 4px; background-color: ${safeDividerColor}; margin: 15px auto;"></div>
@@ -161,44 +266,16 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                   </span>
               </td>
             </tr>
+            ${introBlock}
+            ${zzemaineHtml}
             <tr>
-              <td class="zzemail-body" style="padding: 3mm; color: #333; font-size: 20px; line-height: 1;">
+              <td class="zzemail-body" style="padding: 3mm; color: #333; font-size: 20px; line-height: 1.6;">
                 ${bodyWithShortcodes}
               </td>
             </tr>
-            <tr>
-              <td style="padding: 3mm; text-align:center;">
-                <img alt="BandiZZ Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
-                  endLogo
-                )}">
-                <p style="margin-top: 0; color: #333;">${safeSignature}</p>
-              </td>
-            </tr>
-            <tr style="background: ${safeHeaderBgColor}; color: white;">
-                  <td style="padding: 3mm;">
-                    <table style="width: 100%;">
-                      <tbody>
-                        <tr style="background: ${safeHeaderBgColor}; color: white;">
-                          <td style="padding: 3mm;">
-                            <table style="width: 100%;">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <h2 style="margin: 0px; color: white;">Suivez
-                                      les BandiZZ sur :</h2>
-                                  </td>
-                                  <td style="text-align: right;">
-                                    ${socialHtml}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-            </tr>
+            ${eventsHtml}
+            ${endLogoHtml}
+            ${socialsHtml}
             <tr>
               <td style="padding: 3mm;">
                 ${psHtml}
