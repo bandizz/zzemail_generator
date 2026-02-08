@@ -248,7 +248,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                   padding: 20px; 
                   color: #fff;
                   text-align: center;">
-                <img alt="Logo BandiZZ" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
+                <img alt="BDE logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
                   firstLogo
                 )}">
                 <div style="width: 60px; height: 4px; background-color: ${safeDividerColor}; margin: 15px auto;"></div>
