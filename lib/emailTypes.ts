@@ -64,7 +64,7 @@ export interface EmailConfig {
   specialPsText: string;
   specialPsColor: string;
   /** Show the special PS section (P$ special #4) */
-  showSpecialPs?: boolean;
+  showPS?: boolean;
   /** Show the socials block at the bottom */
   showSocials?: boolean;
   /** Show the end logo / signature block */
@@ -103,7 +103,7 @@ export const DEFAULT_CONFIG: EmailConfig = {
   specialPsLabel: "P$",
   specialPsText: SPECIAL_PS_TEXT,
   specialPsColor: "black",
-  showSpecialPs: true,
+  showPS: true,
   showSocials: true,
   showEndLogo: true,
   zzemainePlanningImage: "",
@@ -132,13 +132,13 @@ export const DEFAULT_CONFIG: EmailConfig = {
   ],
 };
 
-export const BDE_CONFIG: EmailConfig = {
+export const ZZEMAINE_CONFIG: EmailConfig = {
   ...DEFAULT_CONFIG,
   firstLogo: LOGO_BDE_BASE64,
   endLogo: LOGO_BDE_SIMPLIFIED_BASE64,
   title: "MAIL DE LA ZZEMAINE - " + formatedDate,
   showSocials: true,
-  showSpecialPs: true,
+  showPS: true,
   showZzemaineSection: true,
   events: [],
   socials: [

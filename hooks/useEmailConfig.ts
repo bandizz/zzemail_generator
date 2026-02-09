@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   DEFAULT_CONFIG,
-  BDE_CONFIG,
+  ZZEMAINE_CONFIG,
   type EmailConfig,
 } from "@/lib/emailTemplate";
 
@@ -36,7 +36,7 @@ export function useEmailConfig(): UseEmailConfigResult {
       const loadedPreset = parsed.preset || "DEFAULT";
       setPresetState(loadedPreset);
 
-      const base = loadedPreset === "BDE" ? BDE_CONFIG : DEFAULT_CONFIG;
+      const base = loadedPreset === "BDE" ? ZZEMAINE_CONFIG : DEFAULT_CONFIG;
       setConfig({ ...base, ...(parsed.config || {}) });
     } catch {
       // En cas d'erreur (JSON invalide, etc.), on ignore simplement
@@ -69,7 +69,7 @@ export function useEmailConfig(): UseEmailConfigResult {
 
   const setPreset = (p: "DEFAULT" | "BDE") => {
     setPresetState(p);
-    const base = p === "BDE" ? BDE_CONFIG : DEFAULT_CONFIG;
+    const base = p === "BDE" ? ZZEMAINE_CONFIG : DEFAULT_CONFIG;
     setConfig({ ...base });
   };
 

@@ -73,7 +73,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     specialPsColor,
     showSocials,
     showEndLogo,
-    showSpecialPs,
+    showPS,
     zzemainePlanningImage,
     showZzemaineSection,
     events,
@@ -86,7 +86,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     specialPsText,
     specialPsColor
   );
-  const finalPsList = showSpecialPs === false ? psList.filter((p) => p.id !== 4) : psList;
+
+  const finalPsList = showPS === false ? psList.filter((p) => p.id !== 4) : psList;
 
   const safeTitle = escapeHtml(title);
   const safeSignature = escapeHtml(signature);
@@ -211,21 +212,21 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
             `
     : "";
 
-  const psHtml = finalPsList
-    .map((ps) => {
-      // undefined → "P$" (par défaut), "" → aucun préfixe
-      const prefix = ps.label === undefined ? "P$" : ps.label;
-      const labelPart = prefix ? `${escapeHtml(prefix)} ` : "";
-      return `
-                  <p style="color: ${escapeHtml(
-                    ps.color
-                  )}; font-size: 16px; line-height: 1.4;">
-                    <strong>${labelPart}${ps.id}</strong> : ${escapeHtml(
-        ps.text
-      )}
-                  </p>`;
-    })
-    .join("\n");
+    const psHtml = psList
+      .map((ps) => {
+        // undefined → "P$" (par défaut), "" → aucun préfixe
+        const prefix = ps.label === undefined ? "P$" : ps.label;
+        const labelPart = prefix ? `${escapeHtml(prefix)} ` : "";
+        return `
+                    <p style="color: ${escapeHtml(
+                      ps.color
+                    )}; font-size: 16px; line-height: 1.4;">
+                      <strong>${labelPart}${ps.id}</strong> : ${escapeHtml(
+          ps.text
+        )}
+                    </p>`;
+      })
+      .join("\n");
 
   return `
 <style>
@@ -276,11 +277,13 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
             ${eventsHtml}
             ${endLogoHtml}
             ${socialsHtml}
-            <tr>
-              <td style="padding: 3mm;">
-                ${psHtml}
-              </td>
-            </tr>
+            ${showPS === false ? "" : `
+              <tr>
+                <td style="padding: 3mm;">
+                  ${psHtml}
+                </td>
+              </tr>
+            `}
           </tbody>
         </table>
       </td>

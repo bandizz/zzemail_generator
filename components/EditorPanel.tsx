@@ -43,7 +43,7 @@ export function EditorPanel({ config, onUpdate, preset, setPreset }: EditorPanel
               style={{ marginLeft: 8 }}
             >
               <option value="DEFAULT">DEFAULT_CONFIG</option>
-              <option value="BDE">BDE_CONFIG</option>
+              <option value="BDE">ZZEMAINE_CONFIG</option>
             </select>
           </label>
         </div>
@@ -60,10 +60,10 @@ export function EditorPanel({ config, onUpdate, preset, setPreset }: EditorPanel
           <label style={{ color: "#ddd", display: "flex", alignItems: "center", gap: 8 }}>
             <input
               type="checkbox"
-              checked={!!config.showSpecialPs}
-              onChange={(e) => onUpdate({ showSpecialPs: e.target.checked })}
+              checked={!!config.showPS}
+              onChange={(e) => onUpdate({ showPS: e.target.checked })}
             />
-            Afficher P$ spécial
+            Afficher PS
           </label>
 
           <label style={{ color: "#ddd", display: "flex", alignItems: "center", gap: 8 }}>
