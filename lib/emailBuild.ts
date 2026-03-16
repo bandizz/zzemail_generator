@@ -24,6 +24,25 @@ function escapeForRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const normalized = hex.trim();
+  const match = /^#?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/i.exec(normalized);
+  if (!match) return null;
+  let value = match[1];
+  if (value.length === 3) {
+    value = value
+      .split("")
+      .map((c) => c + c)
+      .join("");
+  }
+  const int = parseInt(value, 16);
+  return {
+    r: (int >> 16) & 255,
+    g: (int >> 8) & 255,
+    b: int & 255,
+  };
+}
+
 function applyBodyShortcodes(html: string | null | undefined): string {
   if (!html) return "";
 
@@ -64,6 +83,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     title,
     bodyHtml,
     introHtml,
+    partenariats,
+    partenariatsHtml,
     signature,
     headerBgColor,
     dividerColor,
@@ -111,14 +132,24 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
     .join("\n");
 
   const introWithShortcodes = applyBodyShortcodes(introHtml);
+  const partenariatsList = (partenariats && partenariats.length > 0)
+    ? partenariats
+    : partenariatsHtml
+      ? [{ title: "Partenaire", html: partenariatsHtml }]
+      : [];
+
+  const safeHeaderRgb = hexToRgb(safeHeaderBgColor);
+  const cardBgColor = safeHeaderRgb
+    ? `rgba(${safeHeaderRgb.r}, ${safeHeaderRgb.g}, ${safeHeaderRgb.b}, 0.12)`
+    : "rgba(255, 77, 173, 0.12)";
 
   const endLogoHtml = showEndLogo
     ? `
             <tr>
               <td style="padding: 3mm; text-align:center;">
                 <img alt="BandiZZ Logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
-                  endLogo
-                )}">
+      endLogo
+    )}">
                 <p style="margin-top: 16px; color: #333;">${safeSignature}</p>
               </td>
             </tr>
@@ -156,6 +187,44 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
 
   const bodyWithShortcodes = applyBodyShortcodes(bodyHtml);
 
+  const partenariatsBlocksHtml = partenariatsList
+    .map((part) => {
+      const title = escapeHtml(part.title || "Partenaire");
+      const contentHtml = applyBodyShortcodes(part.html);
+      return `
+                  <div style="background-color: ${cardBgColor}; border: 1px solid ${safeHeaderBgColor}; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+                      <span style="
+                        display: inline-block;
+                        background: ${safeHeaderBgColor};
+                        color: white;
+                        font-size: 12px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        padding: 6px 12px;
+                        border-radius: 999px;
+                      ">
+                        partenaire
+                      </span>
+                      <h3 style="margin: 0; font-size: 20px; color: rgb(26, 26, 26);">${title}</h3>
+                    </div>
+                    <div style="color: #333; font-size: 16px; line-height: 1.6;">
+                      ${contentHtml}
+                    </div>
+                  </div>`;
+    })
+    .join("");
+
+  const partenariatsBlock = partenariatsBlocksHtml
+    ? `
+            <tr>
+              <td style="padding: 3mm;">
+                ${partenariatsBlocksHtml}
+              </td>
+            </tr>
+            `
+    : "";
+
   const introBlock = introWithShortcodes
     ? `
             <tr>
@@ -176,8 +245,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                   </div>
                   <div style="text-align: center;">
                     <img alt="Planning ZZemaine" style="width: 100%; max-width: 100%; height: auto; display: block;" src="data:image/png;base64,${escapeHtml(
-                      zzemainePlanningImage
-                    )}">
+      zzemainePlanningImage
+    )}">
                   </div>
                 </div>
               </td>
@@ -191,12 +260,12 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
               <td style="padding: 3mm;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 100%;">
                   ${events.map((event) => {
-                    const eventImage = escapeHtml(event.eventImage || "");
-                    const eventTitle = escapeHtml(event.eventTitle || "");
-                    const eventDate = escapeHtml(event.eventDate || "");
-                    const eventTime = escapeHtml(event.eventTime || "");
-                    const eventLocation = escapeHtml(event.eventLocation || "");
-                    return `
+      const eventImage = escapeHtml(event.eventImage || "");
+      const eventTitle = escapeHtml(event.eventTitle || "");
+      const eventDate = escapeHtml(event.eventDate || "");
+      const eventTime = escapeHtml(event.eventTime || "");
+      const eventLocation = escapeHtml(event.eventLocation || "");
+      return `
                     <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 15px;">
                       ${eventImage ? `<img alt="" style="width: 100%; height: auto; display: block;" src="data:image/png;base64,${eventImage}">` : ""}
                       <div style="padding: 20px;">
@@ -205,28 +274,28 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                         <p style="margin: 10px 0px 0px; color: rgb(51, 51, 51);">${eventLocation}</p>
                       </div>
                     </div>`;
-                  }).join("")}
+    }).join("")}
                 </div>
               </td>
             </tr>
             `
     : "";
 
-    const psHtml = psList
-      .map((ps) => {
-        // undefined → "P$" (par défaut), "" → aucun préfixe
-        const prefix = ps.label === undefined ? "P$" : ps.label;
-        const labelPart = prefix ? `${escapeHtml(prefix)} ` : "";
-        return `
+  const psHtml = psList
+    .map((ps) => {
+      // undefined → "P$" (par défaut), "" → aucun préfixe
+      const prefix = ps.label === undefined ? "P$" : ps.label;
+      const labelPart = prefix ? `${escapeHtml(prefix)} ` : "";
+      return `
                     <p style="color: ${escapeHtml(
-                      ps.color
-                    )}; font-size: 16px; line-height: 1.4;">
+        ps.color
+      )}; font-size: 16px; line-height: 1.4;">
                       <strong>${labelPart}${ps.id}</strong> : ${escapeHtml(
-          ps.text
-        )}
+        ps.text
+      )}
                     </p>`;
-      })
-      .join("\n");
+    })
+    .join("\n");
 
   return `
 <style>
@@ -250,8 +319,8 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
                   color: #fff;
                   text-align: center;">
                 <img alt="BDE logo" style="width: auto; max-height: 100px; display: block; margin: 0px auto;" src="data:image/png;base64,${escapeHtml(
-                  firstLogo
-                )}">
+    firstLogo
+  )}">
                 <div style="width: 60px; height: 4px; background-color: ${safeDividerColor}; margin: 15px auto;"></div>
                   <span style="
                     display: inline-block;
@@ -275,6 +344,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
               </td>
             </tr>
             ${eventsHtml}
+            ${partenariatsBlock}
             ${endLogoHtml}
             ${socialsHtml}
             ${showPS === false ? "" : `

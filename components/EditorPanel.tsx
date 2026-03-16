@@ -16,6 +16,12 @@ export interface EditorPanelProps {
 }
 
 export function EditorPanel({ config, onUpdate, preset, setPreset }: EditorPanelProps) {
+  const partenariats = (config.partenariats && config.partenariats.length > 0)
+    ? config.partenariats
+    : config.partenariatsHtml
+      ? [{ title: "Partenaire", html: config.partenariatsHtml }]
+      : [];
+
   return (
     <section
       style={{
@@ -128,7 +134,7 @@ export function EditorPanel({ config, onUpdate, preset, setPreset }: EditorPanel
           </div>
         </SettingsSection>
 
-        
+
 
         <SettingsSection
           title="Intro"
@@ -202,6 +208,102 @@ export function EditorPanel({ config, onUpdate, preset, setPreset }: EditorPanel
             events={config.events}
             setEvents={(events) => onUpdate({ events })}
           />
+        </SettingsSection>
+
+        <SettingsSection
+          title="Partenariats"
+          description="Ajoute des partenaires (titre + texte) affichés après les événements."
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {partenariats.map((part, idx) => (
+              <div
+                key={idx}
+                style={{
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  padding: 12,
+                  borderRadius: 12,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 12,
+                    alignItems: "center",
+                    marginBottom: 12,
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "inline-block",
+                      background: config.headerBgColor,
+                      color: "white",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      padding: "6px 10px",
+                      borderRadius: 999,
+                    }}
+                  >
+                    Partenaire
+                  </span>
+                  <TextInput
+                    label={`Titre #${idx + 1}`}
+                    value={part.title}
+                    onChange={(title) => {
+                      const updated = [...partenariats];
+                      updated[idx] = { ...updated[idx], title };
+                      onUpdate({ partenariats: updated, partenariatsHtml: "" });
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = partenariats.filter((_, i) => i !== idx);
+                      onUpdate({ partenariats: updated, partenariatsHtml: "" });
+                    }}
+                    style={{
+                      marginLeft: "auto",
+                      background: "transparent",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      color: "#ddd",
+                      borderRadius: 8,
+                      padding: "4px 10px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Supprimer
+                  </button>
+                </div>
+                <RichTextEditor
+                  value={part.html}
+                  onChange={(html: string) => {
+                    const updated = [...partenariats];
+                    updated[idx] = { ...updated[idx], html };
+                    onUpdate({ partenariats: updated, partenariatsHtml: "" });
+                  }}
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const updated = [...partenariats, { title: "", html: "" }];
+                onUpdate({ partenariats: updated, partenariatsHtml: "" });
+              }}
+              style={{
+                padding: "10px 14px",
+                borderRadius: 10,
+                border: "1px solid rgba(255,255,255,0.25)",
+                background: "rgba(255,255,255,0.05)",
+                color: "#ddd",
+                cursor: "pointer",
+                alignSelf: "flex-start",
+              }}
+            >
+              + Ajouter un partenaire
+            </button>
+          </div>
         </SettingsSection>
 
         <SettingsSection

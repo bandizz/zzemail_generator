@@ -42,6 +42,11 @@ export interface EventItem {
   eventLocation: string;
 }
 
+export interface PartenariatItem {
+  title: string;
+  html: string;
+}
+
 export interface EmailConfig {
   /**
    * Contenu base64 (sans préfixe data:) du logo du haut.
@@ -75,6 +80,10 @@ export interface EmailConfig {
   showZzemaineSection?: boolean;
   /** HTML content for an intro section shown before the planning block */
   introHtml?: string;
+  /** Partenariats (titre + texte) affichés après les événements */
+  partenariats?: PartenariatItem[];
+  /** HTML content for a partenariats section (legacy) */
+  partenariatsHtml?: string;
   events: EventItem[];
   psRaw: PsItem[];
   socials: SocialItem[];
@@ -84,10 +93,10 @@ export const SPECIAL_PS_TEXT = "Parce que 4 < 4";
 
 const now = new Date();
 
-const options: Intl.DateTimeFormatOptions = { 
-  day: 'numeric', 
-  month: 'long', 
-  year: 'numeric' 
+const options: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
 };
 
 const formatedDate = new Intl.DateTimeFormat('fr-FR', options).format(now);
@@ -109,6 +118,8 @@ export const DEFAULT_CONFIG: EmailConfig = {
   zzemainePlanningImage: "",
   showZzemaineSection: false,
   introHtml: "",
+  partenariats: [],
+  partenariatsHtml: "",
   events: [],
   // 3 P$ minimum obligatoires, vides au départ mais à remplir
   psRaw: [
