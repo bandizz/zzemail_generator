@@ -267,7 +267,7 @@ export function buildEmailHtml(config?: Partial<EmailConfig>): string {
       const eventLocation = escapeHtml(event.eventLocation || "");
       return `
                     <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 15px;">
-                      ${eventImage ? `<img alt="" style="width: 100%; height: auto; display: block;" src="data:image/png;base64,${eventImage}">` : ""}
+                      ${eventImage ? `<img alt="" style="width: 100%; height: 393px; object-fit: cover; display: block;" src="data:image/png;base64,${eventImage}">` : ""}
                       <div style="padding: 20px;">
                         <h3 style="margin: 0px 0px 10px; color: rgb(26, 26, 26); font-size: 20px;">${eventTitle}</h3>
                         <p style="margin: 0px; color: rgb(102, 102, 102); font-size: 14px;">${eventDate}${eventTime ? ` • ${eventTime}` : ""}</p>
